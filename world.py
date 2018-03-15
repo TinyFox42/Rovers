@@ -39,7 +39,9 @@ class world(object):
                 val+=self.view[y][x]
             val+="\n"
         return val
-
+    def tick(self):
+        for struc in self.structures:
+            struc.tick()
 class floor(object):
     def __init__(self, x, y, sprite):
         self.x=x
@@ -69,8 +71,18 @@ class boulder(structure):
     def tick(self): #needed to think back to physics to write this function
         self.x+=self.dx
         self.y+=self.dy
+        if (self.dx==0 and self.dy==0):
+            return
         thet=math.atan2(self.dy, self.dx)
         d=math.sqrt(self.dx**2+self.dy**2)
         d-=1
+        if d<0:
+            d=0
         self.dx=int(d*math.cos(thet))
         self.dy=int(d*math.sin(thet))
+    def test_ticks(self):
+        while True:
+            self.tick()
+            print "x:%d, y:%d, dx:%d, dy:%d"%(self.x,self.y,self.dx,self.dy)
+            if raw_input(""):
+                break
