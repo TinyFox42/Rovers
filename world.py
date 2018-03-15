@@ -75,7 +75,7 @@ class boulder(structure):
             return
         thet=math.atan2(self.dy, self.dx)
         d=math.sqrt(self.dx**2+self.dy**2)
-        d-=1
+        d-=self.k #did I really forget to do this?
         if d<0:
             d=0
         self.dx=int(d*math.cos(thet))
