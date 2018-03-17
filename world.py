@@ -1,4 +1,5 @@
 import math
+tile_size=100
 class world(object):
     def __init__(self, x=10, y=10):
         '''Makes a new world object, with dimensions x and y'''
@@ -18,16 +19,16 @@ class world(object):
         self.structures.append(struc)
     def __str__(self):
         for floor in self.floors:
-            x=floor.x
-            y=floor.y
+            x=(floor.x)/tile_size
+            y=(floor.y)/tile_size
             if not (0<=x<self.x and 0<=y<self.y):
                 print "Something is out of bounds"
                 continue
             sprite=floor.sprite
             self.view[y][x]=sprite
         for struc in self.structures:
-            x=struc.x
-            y=struc.y
+            x=int(struc.x)/tile_size#because the plan is to later on move away from just printing stuff. This works for now
+            y=int(struc.y)/tile_size
             if not (0<=x<self.x and 0<=y<self.y):
                 print "Something is out of bounds"
                 continue
@@ -44,8 +45,8 @@ class world(object):
             struc.tick()
 class floor(object):
     def __init__(self, x, y, sprite):
-        self.x=x
-        self.y=y
+        self.x=x*tile_size
+        self.y=y*tile_size
         self.sprite=sprite
         
 class ground(floor):
@@ -54,8 +55,8 @@ class ground(floor):
 
 class structure(object):
     def __init__(self, x, y, sprite):
-        self.x=x
-        self.y=y
+        self.x=x*tile_size
+        self.y=y*tile_size
         self.sprite=sprite
     def tick(self):
         pass
@@ -69,20 +70,31 @@ class boulder(structure):
         self.dy=speedy
         self.k=friction
     def tick(self): #needed to think back to physics to write this function
+        if (abs(self.dx)>tile_size or abs(self.dy)>tile_size):
+            print "Warning, an object is moving fast enough to suffer relativistic effects."
         self.x+=self.dx
         self.y+=self.dy
         if (self.dx==0 and self.dy==0):
             return
         thet=math.atan2(self.dy, self.dx)
         d=math.sqrt(self.dx**2+self.dy**2)
-        d-=self.k #did I really forget to do this?
-        if d<0:
+        d-=(1.0*self.k)/tile_size #did I really forget to do this?
+        if d<0:  #I feel like I may want to do some editing to this to make the friction/speed scale with tile_size
             d=0
-        self.dx=int(d*math.cos(thet))
-        self.dy=int(d*math.sin(thet))
+        self.dx=(d*math.cos(thet))
+        self.dy=(d*math.sin(thet))
     def test_ticks(self):
         while True:
             self.tick()
-            print "x:%d, y:%d, dx:%d, dy:%d"%(self.x,self.y,self.dx,self.dy)
+            print "x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
             if raw_input(""):
                 break
+    def test_run(self):
+        print "Start: x:%3d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
+        a=0
+        while self.dx!=0 or self.dy!=0:
+            self.tick()
+            a+=1
+            if a%10==0:
+                print "After %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
+        print "Finished after %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
