@@ -1,5 +1,12 @@
 import math
 tile_size=100
+class id_manager(object):
+    curr_id=0
+    def next_id(self):
+        val=self.curr_id
+        self.curr_id+=1
+        return val
+ids=id_manager()
 class world(object):
     def __init__(self, x=10, y=10):
         '''Makes a new world object, with dimensions x and y'''
@@ -44,6 +51,24 @@ class world(object):
     def tick(self):
         for struc in self.structures:
             struc.tick()
+        self.check_collisions()
+        for i in range(len(self.structures))[::-1]:#destroy dead stuff
+            if self.structures[i].ded:
+                self.structures.pop(i)
+    def check_collisions(self):
+        pass
+        for i,a in enumerate(self.structures):
+            for b in self.structures[i+1:]:
+                print "%s and %s"%(a.sId, b.sId)
+                x=False
+                y=False
+                if ((b.x+b.size)>=(a.x+a.size)>(b.x))or((b.x+b.size)>(a.x)>=(b.x)):
+                    x=True
+                if ((b.y+b.size)>=(a.y+a.size)>(b.y))or((b.y+b.size)>(a.y)>=(b.y)):
+                    y=True
+                if x and y:
+                    print "%s hit %s"%(a.sId, b.sId)
+                    a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
 class null_world(object):
     '''Has all the functions needed for an object to be tested, without actually being a world'''
     pass
@@ -56,23 +81,25 @@ class floor(object):
 class ground(floor):
     def __init__(self, x, y):
         floor.__init__(self, x, y, '.')
-
 class structure(object):
-    def __init__(self, x, y, sprite):
+    def __init__(self, x, y, sprite, box_length):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
         self.owner=null_world() #ok, that just sounds cool to type
+        self.sId=ids.next_id()
+        self.size=box_length*tile_size
+        self.ded=False
     def tick(self):
         pass
     def assign_world(self, world):
         self.world=world
 class rock(structure):
     def __init__(self, x,y):
-        structure.__init__(self,x,y,"*")
+        structure.__init__(self,x,y,"*",1)
 class boulder(structure):
     def __init__(self, x, y, speedx, speedy, friction):
-        structure.__init__(self, x, y, "o")
+        structure.__init__(self, x, y, "o",1)
         self.dx=speedx
         self.dy=speedy
         self.k=friction
