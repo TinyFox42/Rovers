@@ -17,6 +17,7 @@ class world(object):
                 self.floors.append(ground(i,j))
     def add_struc(self, struc):
         self.structures.append(struc)
+        struc.assign_world(self)
     def __str__(self):
         for floor in self.floors:
             x=(floor.x)/tile_size
@@ -43,6 +44,9 @@ class world(object):
     def tick(self):
         for struc in self.structures:
             struc.tick()
+class null_world(object):
+    '''Has all the functions needed for an object to be tested, without actually being a world'''
+    pass
 class floor(object):
     def __init__(self, x, y, sprite):
         self.x=x*tile_size
@@ -58,8 +62,11 @@ class structure(object):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
+        self.owner=null_world() #ok, that just sounds cool to type
     def tick(self):
         pass
+    def assign_world(self, world):
+        self.world=world
 class rock(structure):
     def __init__(self, x,y):
         structure.__init__(self,x,y,"*")
