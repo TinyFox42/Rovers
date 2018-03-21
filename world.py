@@ -69,6 +69,11 @@ class world(object):
                 if x and y:
                     print "%s hit %s"%(a.sId, b.sId)
                     a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
+def calculate_collision(a,b):
+    pass
+    if a.coll=="ball" and b.coll=="ball":
+        print "Ball-ball collisions are not yet coded"
+        return
 class null_world(object):
     '''Has all the functions needed for an object to be tested, without actually being a world'''
     pass
@@ -82,7 +87,7 @@ class ground(floor):
     def __init__(self, x, y):
         floor.__init__(self, x, y, '.')
 class structure(object):
-    def __init__(self, x, y, sprite, box_length):
+    def __init__(self, x, y, sprite, box_length, collision_class):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
@@ -90,19 +95,21 @@ class structure(object):
         self.sId=ids.next_id()
         self.size=box_length*tile_size
         self.ded=False
+        self.coll=collision_class
     def tick(self):
         pass
     def assign_world(self, world):
         self.world=world
 class rock(structure):
-    def __init__(self, x,y):
-        structure.__init__(self,x,y,"*",1)
+    def __init__(self, x,y, sprite='*',box_length=1, collision_class='wall'):
+        structure.__init__(self,x,y,sprite,box_length, collision_class)
 class boulder(structure):
-    def __init__(self, x, y, speedx, speedy, friction):
-        structure.__init__(self, x, y, "o",1)
+    def __init__(self, x, y, speedx, speedy, friction, sprite='o', box_length=1, collision_class='ball'):
+        structure.__init__(self, x, y, sprite,box_length,collision_class)
         self.dx=speedx
         self.dy=speedy
         self.k=friction
+        self.last_tick={'x':self.x, 'y':self.y, 'dx':self.dx, 'dy':self.dy}
     def tick(self): #needed to think back to physics to write this function
         if (abs(self.dx)>tile_size or abs(self.dy)>tile_size):
             print "Warning, an object is moving fast enough to suffer relativistic effects."
@@ -117,6 +124,7 @@ class boulder(structure):
             d=0
         self.dx=(d*math.cos(thet))
         self.dy=(d*math.sin(thet))
+        self.last_tick={'x':self.x, 'y':self.y, 'dx':self.dx, 'dy':self.dy}
     def test_ticks(self):
         while True:
             self.tick()
