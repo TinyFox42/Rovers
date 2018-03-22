@@ -70,10 +70,60 @@ class world(object):
                     print "%s hit %s"%(a.sId, b.sId)
                     a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
 def calculate_collision(a,b):
-    pass
-    if a.coll=="ball" and b.coll=="ball":
-        print "Ball-ball collisions are not yet coded"
-        return
+    if a.coll=='ball':
+        if b.coll=='ball':
+            coll_b_b(a,b)
+        elif b.coll=="wall":
+            coll_b_w(a,b)
+    elif a.coll=='wall':
+        if b.coll=='ball':
+            coll_b_w(b,a)
+        elif b.coll=='wall':
+            coll_w_w(a,b)
+def coll_b_b(a,b):
+    print "Ball-ball collisions are not yet coded"
+    a.ded, b.ded=True, True
+    return
+def coll_b_w(a,b):
+    '''Calculates what happens in a colision betweel ball a and wall b'''
+    print "Ball-wall collisions are not yet coded"
+    a.ded, b.ded=True, True
+    return
+    #most of this assumes that b is statinary, but it shouldn't actually break if b isn't
+    farx=False #a hit b, but the part of a that hit was on x+size, not x. Look at the drawing I made below
+    fary=False
+    '''
+    fary=False
+(x,y)       (x+size, y)
+    _________
+    |       |
+farx|       | farx=True
+=0  |       |
+    |_______|
+(x,y+size)  (x+size, y+size)
+    fary=True
+    '''
+    if (b.x<(a.x+a.size)<(b.x+b.size)):
+        farx=True#otherwise, either there wasn't a collision (which means this wouldn't be called) or it was at normal x
+    if (b.y<(a.y+a.size)<(b.y+b.size)):fary=True;
+    #I guess this also assumes that only one corner on each is intercepting... Which should be true for awhile
+    rdx=abs(a.last_tick['dx']-b.dx) #I guess if b ever does move, this will need to be switched to it's previous tick
+    rdy=abs(a.last_tick['dy']-b.dy)
+    rx=a.last_tick['x']-(b.x+b.size)
+    if farx:
+        rx=b.x-(a.last_tick['x']+a.size)
+    ry=a.last_tick['y']-(b.y+b.size)
+    if fary:
+        ry=b.y-(a.last_tick['y']+a.size)
+    tx=rx/rdx #the time it takes for the x's to intercept
+    ty=ry/rdy 
+    if (tx>ty):#If it collided along the side where x is constant
+        pass
+        
+def coll_w_w(a,b):
+    print "Wall-wall collisions are not yet coded"
+    a.ded, b.ded=True, True
+    return
 class null_world(object):
     '''Has all the functions needed for an object to be tested, without actually being a world'''
     pass
