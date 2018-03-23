@@ -68,7 +68,8 @@ class world(object):
                     y=True
                 if x and y:
                     print "%s hit %s"%(a.sId, b.sId)
-                    a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
+                    calculate_collision(a,b)
+                    #a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
@@ -103,23 +104,38 @@ farx|       | farx=True
 (x,y+size)  (x+size, y+size)
     fary=True
     '''
-    if (b.x<(a.x+a.size)<(b.x+b.size)):
+    if (b.x<(a.x+a.size)<=(b.x+b.size)):
         farx=True#otherwise, either there wasn't a collision (which means this wouldn't be called) or it was at normal x
-    if (b.y<(a.y+a.size)<(b.y+b.size)):fary=True;
+    if (b.y<(a.y+a.size)<=(b.y+b.size)):fary=True;
     #I guess this also assumes that only one corner on each is intercepting... Which should be true for awhile
     rdx=abs(a.last_tick['dx']-b.dx) #I guess if b ever does move, this will need to be switched to it's previous tick
     rdy=abs(a.last_tick['dy']-b.dy)
-    rx=a.last_tick['x']-(b.x+b.size)
-    if farx:
+    rx,ry=0,0
+    if not(b.x<=a.last_tick['x']<(b.x+b.size)):#if last tick it wasn't inside the thing
+        rx=a.last_tick['x']-(b.x+b.size)
+    elif farx and not (b.x<(a.last_tick['x']+a.size)<=(b.x+b.size)):#if the far side wasn't inside the thing last tick
         rx=b.x-(a.last_tick['x']+a.size)
-    ry=a.last_tick['y']-(b.y+b.size)
-    if fary:
+    if not(b.y<=a.last_tick['y']<(b.y+b.size)):
+        ry=a.last_tick['y']-(b.y+b.size)
+    elif fary and not (b.y<(a.last_tick['y']+a.size)<=(b.y+b.size)):
         ry=b.y-(a.last_tick['y']+a.size)
-    tx=rx/rdx #the time it takes for the x's to intercept
-    ty=ry/rdy 
+    rx=abs(rx)
+    ry=abs(ry)
+    tx,ty=0,0
+    if rdx!=0:
+        tx=rx/rdx #the time it takes for the x's to intercept
+    if rdy!=0:
+        ty=ry/rdy 
     if (tx>ty):#If it collided along the side where x is constant
         pass
-        
+        side='left'
+        if farx: side='right';
+        print "%s collided with %s on the %s side"%(a.sId, b.sId, side);
+    else:
+        side='top'
+        if fary:side='bottom';
+        print "%s collided with %s on the %s"%(a.sId, b.sId, side);
+    print "t's: \n\tx:%f\n\ty:%f\nfars:\n\tx:%s\n\ty:%s\nr's:\n\tx:%f\n\ty:%f\n\tdx:%f\n\tdy:%f"%(tx,ty,str(farx),str(fary),rx,ry,rdx,rdy)
 def coll_w_w(a,b):
     print "Wall-wall collisions are not yet coded"
     a.ded, b.ded=True, True
@@ -146,6 +162,7 @@ class structure(object):
         self.size=box_length*tile_size
         self.ded=False
         self.coll=collision_class
+        #need to add in dx and dy eventually
     def tick(self):
         pass
     def assign_world(self, world):
@@ -153,6 +170,7 @@ class structure(object):
 class rock(structure):
     def __init__(self, x,y, sprite='*',box_length=1, collision_class='wall'):
         structure.__init__(self,x,y,sprite,box_length, collision_class)
+        self.dx,self.dy=0,0
 class boulder(structure):
     def __init__(self, x, y, speedx, speedy, friction, sprite='o', box_length=1, collision_class='ball'):
         structure.__init__(self, x, y, sprite,box_length,collision_class)
