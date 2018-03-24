@@ -1,5 +1,6 @@
 import math
-tile_size=100
+tile_size=100 #how many processed units are in the displayed unit, both with tile dimensions and time
+collision_efficiency=.5 #how much of the velocity stays when a boulder and rock collide
 class id_manager(object):
     curr_id=0
     def next_id(self):
@@ -70,6 +71,9 @@ class world(object):
                     print "%s hit %s"%(a.sId, b.sId)
                     calculate_collision(a,b)
                     #a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
+    def diagnose(self):
+        for stu in self.structures:
+            stu.diagnose()
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
@@ -87,9 +91,9 @@ def coll_b_b(a,b):
     return
 def coll_b_w(a,b):
     '''Calculates what happens in a colision betweel ball a and wall b'''
-    print "Ball-wall collisions are not yet coded"
-    a.ded, b.ded=True, True
-    return
+    #print "Ball-wall collisions are not yet coded"
+    #a.ded, b.ded=True, True
+    #return
     #most of this assumes that b is statinary, but it shouldn't actually break if b isn't
     farx=False #a hit b, but the part of a that hit was on x+size, not x. Look at the drawing I made below
     fary=False
@@ -126,15 +130,35 @@ farx|       | farx=True
         tx=rx/rdx #the time it takes for the x's to intercept
     if rdy!=0:
         ty=ry/rdy 
-    if (tx>ty):#If it collided along the side where x is constant
+    if (tx>=ty):#If it collided along the side where x is constant
         pass
         side='left'
         if farx: side='right';
         print "%s collided with %s on the %s side"%(a.sId, b.sId, side);
-    else:
+        if side=='left':
+            a.dx=-(a.dx*collision_efficiency)
+            a.x=b.x+b.size
+        else:
+            a.dx=-(a.dx*collision_efficiency)
+            a.x=b.x-a.size
+    if tx<=ty:
         side='top'
         if fary:side='bottom';
         print "%s collided with %s on the %s"%(a.sId, b.sId, side);
+        if side=='top':
+            a.dy=-(a.dy*collision_efficiency)
+            a.y=b.y+b.size
+        else:
+            a.dy=-(a.dy*collision_efficiency)
+            a.y=b.y-a.size
+    '''elif tx==ty:
+        sidey='upper'
+        sidex='left'
+        if farx: sidex='right';
+        if fary: sidey='lower';
+        print "Oh, great. %s collided with %s on the %s-%s side..."%(a.sId, b.sId, sidey,sidex)
+        print "I don't know what to do now..."
+        a.ded, b.ded=True, True'''
     print "t's: \n\tx:%f\n\ty:%f\nfars:\n\tx:%s\n\ty:%s\nr's:\n\tx:%f\n\ty:%f\n\tdx:%f\n\tdy:%f"%(tx,ty,str(farx),str(fary),rx,ry,rdx,rdy)
 def coll_w_w(a,b):
     print "Wall-wall collisions are not yet coded"
@@ -153,6 +177,7 @@ class ground(floor):
     def __init__(self, x, y):
         floor.__init__(self, x, y, '.')
 class structure(object):
+    type_name="Generic structure"
     def __init__(self, x, y, sprite, box_length, collision_class):
         self.x=x*tile_size
         self.y=y*tile_size
@@ -167,11 +192,25 @@ class structure(object):
         pass
     def assign_world(self, world):
         self.world=world
+    def diagnose(self):
+        print self.type_name+" with sId "+str(self.sId)
+        varbs=['x','y','sprite','sId','size','ded','coll_class']
+        vals=[self.x,self.y,self.sprite,self.sId,self.size,self.ded,self.coll]
+        for i in range(len(varbs)):
+            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
 class rock(structure):
+    type_name="Rock"
     def __init__(self, x,y, sprite='*',box_length=1, collision_class='wall'):
         structure.__init__(self,x,y,sprite,box_length, collision_class)
         self.dx,self.dy=0,0
+    def diagnose(self):
+        structure.diagnose(self)
+        varbs=['dx','dy']
+        vals=[self.dx,self.dy]
+        for i in range(len(varbs)):
+            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
 class boulder(structure):
+    type_name="Boulder"
     def __init__(self, x, y, speedx, speedy, friction, sprite='o', box_length=1, collision_class='ball'):
         structure.__init__(self, x, y, sprite,box_length,collision_class)
         self.dx=speedx
@@ -179,6 +218,7 @@ class boulder(structure):
         self.k=friction
         self.last_tick={'x':self.x, 'y':self.y, 'dx':self.dx, 'dy':self.dy}
     def tick(self): #needed to think back to physics to write this function
+        self.last_tick={'x':self.x, 'y':self.y, 'dx':self.dx, 'dy':self.dy}#for a bit this was at the top...
         if (abs(self.dx)>tile_size or abs(self.dy)>tile_size):
             print "Warning, an object is moving fast enough to suffer relativistic effects."
         self.x+=self.dx
@@ -190,9 +230,8 @@ class boulder(structure):
         d-=(1.0*self.k)/tile_size #did I really forget to do this?
         if d<0:  #I feel like I may want to do some editing to this to make the friction/speed scale with tile_size
             d=0
-        self.dx=(d*math.cos(thet))
-        self.dy=(d*math.sin(thet))
-        self.last_tick={'x':self.x, 'y':self.y, 'dx':self.dx, 'dy':self.dy}
+        self.dx=round((d*math.cos(thet)),10)
+        self.dy=round((d*math.sin(thet)),10)#the round fixes a few floating-point errors
     def test_ticks(self):
         while True:
             self.tick()
@@ -208,3 +247,9 @@ class boulder(structure):
             if a%10==0:
                 print "After %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
         print "Finished after %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
+    def diagnose(self):
+        structure.diagnose(self)
+        varbs=['dx','dy','k']
+        vals=[self.dx,self.dy,self.k]
+        for i in range(len(varbs)):
+            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
