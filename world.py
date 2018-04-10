@@ -60,7 +60,7 @@ class world(object):
         pass
         for i,a in enumerate(self.structures):
             for b in self.structures[i+1:]:
-                print "%s and %s"%(a.sId, b.sId)
+                #print "%s and %s"%(a.sId, b.sId)
                 x=False
                 y=False
                 if ((b.x+b.size)>=(a.x+a.size)>(b.x))or((b.x+b.size)>(a.x)>=(b.x)):

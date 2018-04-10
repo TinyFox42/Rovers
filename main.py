@@ -45,3 +45,43 @@ class game(object):
         print self.w
         #if raw_input("Good? ").strip().lower()=='y':
         self.run()
+    def tick(self, command):
+        '''Reads the command and acts on it
+        Outputs:
+            1:Tick was run, print the world
+            0:Game should now quit
+            -1:Something else was printed, don't print the world
+        '''
+        if command=='':
+            self.w.tick()
+            return 1
+        elif command=='q':
+            return 0
+        elif command=='d':
+            self.w.diagnose()
+            return -1
+    def __repr__(self):
+        return str(self.w)
+import interface
+class master(object):
+    def __init__(self):
+        ans=raw_input("Use new input? y/N ").strip().lower()
+        if ans=='y':
+            print "New input is not yet coded"
+            #self.interface_setup()
+            #return
+        ans=raw_input("Enter setup number: ").strip()
+        if ans.isdigit()==False:
+            ans=0
+        else:
+            ans=int(ans)
+        self.game=game(ans)
+        self.mainloop()
+    def mainloop(self):
+        while True:
+            ans=raw_input(">")
+            a=self.game.tick(ans)
+            if a==0:
+                return
+            elif a==1:
+                print self.game
