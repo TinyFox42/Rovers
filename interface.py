@@ -14,6 +14,7 @@ class interface(object):
         self.l.bind('<Return>', self.stuff)
         self.l.pack()
         self.root.mainloop()
+        print "test"
     def stuff(self,event):
         print "Text was " +self.v.get()
     def test_rect(self, x1, y1, x2, y2):
