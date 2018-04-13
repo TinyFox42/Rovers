@@ -76,6 +76,15 @@ class world(object):
         for stu in self.structures:
             val+='\n'+stu.diagnose()
         return val
+    def fancy_print(self):
+        '''Returns the values needed to draw it'''
+        floors=[]
+        for flr in self.floors:
+            floors.append([flr.x,flr.y,flr.color])
+        structures=[]
+        for stu in self.structures:
+            structures.append([stu.x,stu.y,stu.size,stu.color])
+        return tile_size, floors, structures
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
@@ -170,17 +179,17 @@ class null_world(object):
     '''Has all the functions needed for an object to be tested, without actually being a world'''
     pass
 class floor(object):
-    def __init__(self, x, y, sprite):
+    def __init__(self, x, y, sprite, color):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
-        
+        self.color=color
 class ground(floor):
     def __init__(self, x, y):
-        floor.__init__(self, x, y, '.')
+        floor.__init__(self, x, y, '.', 'white')
 class structure(object):
     type_name="Generic structure"
-    def __init__(self, x, y, sprite, box_length, collision_class):
+    def __init__(self, x, y, sprite,color, box_length, collision_class):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
@@ -189,6 +198,7 @@ class structure(object):
         self.size=box_length*tile_size
         self.ded=False
         self.coll=collision_class
+        self.color=color
         #need to add in dx and dy eventually
     def tick(self):
         pass
@@ -203,8 +213,8 @@ class structure(object):
         return val
 class rock(structure):
     type_name="Rock"
-    def __init__(self, x,y, sprite='*',box_length=1, collision_class='wall'):
-        structure.__init__(self,x,y,sprite,box_length, collision_class)
+    def __init__(self, x,y, sprite='*',color='black', box_length=1, collision_class='wall'):
+        structure.__init__(self,x,y,sprite,color,box_length, collision_class)
         self.dx,self.dy=0,0
     def diagnose(self):
         val=structure.diagnose(self)
@@ -215,8 +225,8 @@ class rock(structure):
         return val
 class boulder(structure):
     type_name="Boulder"
-    def __init__(self, x, y, speedx, speedy, friction, sprite='o', box_length=1, collision_class='ball'):
-        structure.__init__(self, x, y, sprite,box_length,collision_class)
+    def __init__(self, x, y, speedx, speedy, friction, sprite='o',color='brown', box_length=1, collision_class='ball'):
+        structure.__init__(self, x, y, sprite,color,box_length,collision_class)
         self.dx=speedx
         self.dy=speedy
         self.k=friction

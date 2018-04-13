@@ -61,6 +61,8 @@ class game(object):
             return self.w.diagnose()
     def __repr__(self):
         return str(self.w)
+    def draw_data(self):
+        return self.w.fancy_print()
 import interface
 class master(object):
     def __init__(self):
@@ -102,5 +104,7 @@ class master(object):
                 self.inter.end()
             elif a==1:
                 self.inter.set_text(str(self.game)) #eventually, will draw it
+                tile,flrs,stus=self.game.draw_data()
+                self.inter.draw(tile,flrs,stus)
             elif type(a)==str:
                 self.inter.set_text(a)

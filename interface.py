@@ -1,6 +1,6 @@
 #Will handel most of the GUI
+scale=10#how many pixles there are per grid square
 from Tkinter import *
-stuff=[]
 class interface(object):
     
 
@@ -68,3 +68,11 @@ class interface(object):
         self.v.set('')
     def end(self):
         self.root.destroy()
+    def draw(self, tile, floors, strucs):
+        ratio=1.0*scale/tile
+        #print ratio
+        for floor in floors:
+            self.c.create_rectangle(floor[0]*ratio,floor[1]*ratio,floor[0]*ratio+scale,floor[1]*ratio+scale,fill=floor[2])
+        for struc in strucs:
+            self.c.create_rectangle(struc[0]*ratio,struc[1]*ratio,struc[0]*ratio+struc[2]*ratio,struc[1]*ratio+struc[2]*ratio,fill=struc[3])
+        
