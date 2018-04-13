@@ -44,7 +44,7 @@ class game(object):
         self.w.add_struc(bottom)
         print self.w
         #if raw_input("Good? ").strip().lower()=='y':
-        self.run()
+        #self.run()
     def tick(self, command):
         '''Reads the command and acts on it
         Outputs:
@@ -98,12 +98,14 @@ class master(object):
         if self.mode=='setup':
             self.game=game(int(value))
             self.mode='play'
+            tile,flrs,stus=self.game.draw_data()
+            self.inter.draw(tile,flrs,stus)
         elif self.mode=='play':
             a=self.game.tick(value)
             if a==0:
                 self.inter.end()
             elif a==1:
-                self.inter.set_text(str(self.game)) #eventually, will draw it
+                #self.inter.set_text(str(self.game)) #eventually, will draw it
                 tile,flrs,stus=self.game.draw_data()
                 self.inter.draw(tile,flrs,stus)
             elif type(a)==str:

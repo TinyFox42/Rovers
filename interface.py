@@ -18,7 +18,8 @@ class interface(object):
         self.l=Entry(self.root, textvariable=self.v, width=40)
         self.l.bind('<Return>', self.send_up)
         #self.l.pack()
-        self.t=Text(self.root, state=NORMAL,height=12, width=40)
+        #self.t=Text(self.root, state=NORMAL,height=12, width=40)
+        self.make_text_box()#sets up the textbox, removes some clutter from the main function
         self.t.mark_set("start", INSERT)
         self.t.mark_gravity("start", LEFT)
         self.t.insert(INSERT, 'Enter setup number:')
@@ -26,7 +27,7 @@ class interface(object):
         #self.t=Text(f, state=DISABLED, height=10, width=10)
         self.c.grid(row=0, sticky='nsew')
         self.l.grid(row=1, columnspan=2, sticky='we')
-        self.t.grid(row=0, column=1, sticky='nsew')
+        #self.t.grid(row=0, column=1, sticky='nsew')
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
@@ -37,6 +38,16 @@ class interface(object):
         self.t.pack(expand=True, side=LEFT)'''
         #self.root.mainloop()
         #print "test"
+    def make_text_box(self):
+        frame=Frame(self.root, bd=2, relief=SUNKEN)
+        frame.grid_rowconfigure(0,weight=1)
+        frame.grid_columnconfigure(0,weight=1)
+        scrollbar=Scrollbar(frame)
+        scrollbar.grid(row=0,column=1,sticky='ns')
+        self.t=Text(frame, yscrollcommand=scrollbar.set, state=NORMAL,height=12, width=40)
+        self.t.grid(row=0,column=0,sticky='nsew')
+        scrollbar.config(command=self.t.yview)
+        frame.grid(row=0,column=1,sticky='nsew')
     def startup(self):
         self.root.mainloop()
     def stuff(self,event):
