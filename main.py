@@ -50,7 +50,7 @@ class game(object):
         Outputs:
             1:Tick was run, print the world
             0:Game should now quit
-            -1:Something else was printed, don't print the world
+            Something else:Print that
         '''
         if command=='':
             self.w.tick()
@@ -58,8 +58,7 @@ class game(object):
         elif command=='q':
             return 0
         elif command=='d':
-            self.w.diagnose()
-            return -1
+            return self.w.diagnose()
     def __repr__(self):
         return str(self.w)
 import interface
@@ -68,7 +67,8 @@ class master(object):
         ans=raw_input("Use new input? y/N ").strip().lower()
         if ans=='y':
             self.mode='setup'
-            self.inter=interface.interface(self, 10,10)
+            interface.interface(self, 10,10)
+            #print "done!"
             #self.inter.set_text('Enter the setup number')
             #print "New input is not yet coded"
             #self.interface_setup()
@@ -89,13 +89,16 @@ class master(object):
                 return
             elif a==1:
                 print self.game
+            elif type(a)==str:
+                print a
     def recieve(self, value):
         if self.mode=='setup':
             self.game=game(int(value))
             self.mode='play'
         elif self.mode=='play':
             a=self.game.tick(value)
-            if a==0:
+            return a
+            '''if a==0:
                 self.inter.end()
             elif a==1:
-                print self.game #eventually, will draw it
+                self.inter.set_text(str(self.game)) #eventually, will draw it'''

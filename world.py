@@ -72,8 +72,10 @@ class world(object):
                     calculate_collision(a,b)
                     #a.ded, b.ded=True, True#later on, replace this with some actual special colision interaction
     def diagnose(self):
+        val=''
         for stu in self.structures:
-            stu.diagnose()
+            val+='\n'+stu.diagnose()
+        return val
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
@@ -193,22 +195,24 @@ class structure(object):
     def assign_world(self, world):
         self.world=world
     def diagnose(self):
-        print self.type_name+" with sId "+str(self.sId)
+        val= self.type_name+" with sId "+str(self.sId)
         varbs=['x','y','sprite','sId','size','ded','coll_class']
         vals=[self.x,self.y,self.sprite,self.sId,self.size,self.ded,self.coll]
         for i in range(len(varbs)):
-            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
+            val+= "\n\t%s: %s"%(str(varbs[i]),str(vals[i]))
+        return val
 class rock(structure):
     type_name="Rock"
     def __init__(self, x,y, sprite='*',box_length=1, collision_class='wall'):
         structure.__init__(self,x,y,sprite,box_length, collision_class)
         self.dx,self.dy=0,0
     def diagnose(self):
-        structure.diagnose(self)
+        val=structure.diagnose(self)
         varbs=['dx','dy']
         vals=[self.dx,self.dy]
         for i in range(len(varbs)):
-            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
+            val+= "\n\t%s: %s"%(str(varbs[i]),str(vals[i]))
+        return val
 class boulder(structure):
     type_name="Boulder"
     def __init__(self, x, y, speedx, speedy, friction, sprite='o', box_length=1, collision_class='ball'):
@@ -248,8 +252,9 @@ class boulder(structure):
                 print "After %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
         print "Finished after %3d ticks: x:%d, y:%d, pos:(%d, %d), dx:%f, dy:%f"%(a,self.x,self.y,self.x/tile_size,self.dy/tile_size,self.dx,self.dy)
     def diagnose(self):
-        structure.diagnose(self)
+        val=structure.diagnose(self)
         varbs=['dx','dy','k']
         vals=[self.dx,self.dy,self.k]
         for i in range(len(varbs)):
-            print "\t%s: %s"%(str(varbs[i]),str(vals[i]))
+            val+= "\n\t%s: %s"%(str(varbs[i]),str(vals[i]))
+        return val

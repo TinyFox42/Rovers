@@ -62,7 +62,13 @@ class interface(object):
     def send_up(self, event):
         value=self.v.get()
         value=value[len(self.start):]
-        self.master.recieve(value)
+        a=self.master.recieve(value)
         self.v.set('')
+        if a==0:
+            self.end()
+        elif a==1:
+            self.set_text(str(self.master.game))
+        elif type(a)==str:
+            self.set_text(a)
     def end(self):
         self.root.destroy()
