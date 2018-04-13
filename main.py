@@ -52,13 +52,14 @@ class game(object):
             0:Game should now quit
             Something else:Print that
         '''
+        text=self.w.diagnose()
         if command=='':
             self.w.tick()
-            return 1
+            return 1,text
         elif command=='q':
-            return 0
-        elif command=='d':
-            return self.w.diagnose()
+            return 0,text
+        '''elif command=='d':
+            return self.w.diagnose()'''
     def __repr__(self):
         return str(self.w)
     def draw_data(self):
@@ -101,12 +102,12 @@ class master(object):
             tile,flrs,stus=self.game.draw_data()
             self.inter.draw(tile,flrs,stus)
         elif self.mode=='play':
-            a=self.game.tick(value)
+            a,text=self.game.tick(value)
             if a==0:
                 self.inter.end()
             elif a==1:
                 #self.inter.set_text(str(self.game)) #eventually, will draw it
                 tile,flrs,stus=self.game.draw_data()
                 self.inter.draw(tile,flrs,stus)
-            elif type(a)==str:
-                self.inter.set_text(a)
+            #elif type(a)==str:
+            self.inter.set_text(text)
