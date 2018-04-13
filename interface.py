@@ -35,8 +35,10 @@ class interface(object):
         '''self.c.pack(expand=True, side=LEFT)
         self.l.pack(expand=True)
         self.t.pack(expand=True, side=LEFT)'''
-        self.root.mainloop()
+        #self.root.mainloop()
         #print "test"
+    def startup(self):
+        self.root.mainloop()
     def stuff(self,event):
         print "Text was " +self.v.get()
         self.set_text(self.v.get())
@@ -62,13 +64,7 @@ class interface(object):
     def send_up(self, event):
         value=self.v.get()
         value=value[len(self.start):]
-        a=self.master.recieve(value)
+        self.master.recieve(value)
         self.v.set('')
-        if a==0:
-            self.end()
-        elif a==1:
-            self.set_text(str(self.master.game))
-        elif type(a)==str:
-            self.set_text(a)
     def end(self):
         self.root.destroy()

@@ -67,7 +67,8 @@ class master(object):
         ans=raw_input("Use new input? y/N ").strip().lower()
         if ans=='y':
             self.mode='setup'
-            interface.interface(self, 10,10)
+            self.inter=interface.interface(self, 10,10)
+            self.inter.startup()#this call doesn't return until the window is closed, nothing will be run after it
             #print "done!"
             #self.inter.set_text('Enter the setup number')
             #print "New input is not yet coded"
@@ -97,8 +98,9 @@ class master(object):
             self.mode='play'
         elif self.mode=='play':
             a=self.game.tick(value)
-            return a
-            '''if a==0:
+            if a==0:
                 self.inter.end()
             elif a==1:
-                self.inter.set_text(str(self.game)) #eventually, will draw it'''
+                self.inter.set_text(str(self.game)) #eventually, will draw it
+            elif type(a)==str:
+                self.inter.set_text(a)
