@@ -67,16 +67,20 @@ class master(object):
     def __init__(self):
         ans=raw_input("Use new input? y/N ").strip().lower()
         if ans=='y':
-            print "New input is not yet coded"
+            self.mode='setup'
+            self.inter=interface.interface(self, 10,10)
+            #self.inter.set_text('Enter the setup number')
+            #print "New input is not yet coded"
             #self.interface_setup()
             #return
-        ans=raw_input("Enter setup number: ").strip()
-        if ans.isdigit()==False:
-            ans=0
         else:
-            ans=int(ans)
-        self.game=game(ans)
-        self.mainloop()
+            ans=raw_input("Enter setup number: ").strip()
+            if ans.isdigit()==False:
+                ans=0
+            else:
+                ans=int(ans)
+            self.game=game(ans)
+            self.mainloop()
     def mainloop(self):
         while True:
             ans=raw_input(">")
@@ -85,3 +89,13 @@ class master(object):
                 return
             elif a==1:
                 print self.game
+    def recieve(self, value):
+        if self.mode=='setup':
+            self.game=game(int(value))
+            self.mode='play'
+        elif self.mode=='play':
+            a=self.game.tick(value)
+            if a==0:
+                self.inter.end()
+            elif a==1:
+                print self.game #eventually, will draw it

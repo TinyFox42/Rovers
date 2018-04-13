@@ -4,7 +4,8 @@ stuff=[]
 class interface(object):
     
 
-    def __init__(self, x, y):        
+    def __init__(self, master, x, y):  
+        self.master=master      
         self.root=Tk()
         #f=Frame(self.root)
         self.c=Canvas(self.root, width=x*10, height=y*10)
@@ -15,11 +16,13 @@ class interface(object):
         self.v.trace('w',self.edited)
         self.start=''
         self.l=Entry(self.root, textvariable=self.v, width=40)
-        self.l.bind('<Return>', self.stuff)
+        self.l.bind('<Return>', self.send_up)
         #self.l.pack()
-        self.t=Text(self.root, state=DISABLED,height=12, width=40)
+        self.t=Text(self.root, state=NORMAL,height=12, width=40)
         self.t.mark_set("start", INSERT)
         self.t.mark_gravity("start", LEFT)
+        self.t.insert(INSERT, 'Enter setup number:')
+        self.t.config(state=NORMAL)
         #self.t=Text(f, state=DISABLED, height=10, width=10)
         self.c.grid(row=0, sticky='nsew')
         self.l.grid(row=1, columnspan=2, sticky='we')
@@ -56,3 +59,10 @@ class interface(object):
     def set_prefix(self, prefix):
         self.v.set(prefix)
         self.start=prefix
+    def send_up(self, event):
+        value=self.v.get()
+        value=value[len(self.start):]
+        self.master.recieve(value)
+        self.v.set('')
+    def end(self):
+        self.root.destroy()
