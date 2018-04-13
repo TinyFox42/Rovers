@@ -1,4 +1,7 @@
 import world
+help_string='''To make the game advance a tick, press enter with the text box empty
+To quit the game, enter 'q'
+To see this again, enter 'help\''''
 class game(object):
     def __init__(self, setup=0):
         self.w=world.world()
@@ -58,6 +61,8 @@ class game(object):
             return 1,text
         elif command=='q':
             return 0,text
+        elif command=='help':
+            return help_string, ''
         '''elif command=='d':
             return self.w.diagnose()'''
     def __repr__(self):
@@ -103,11 +108,13 @@ class master(object):
             self.inter.draw(tile,flrs,stus)
         elif self.mode=='play':
             a,text=self.game.tick(value)
+            if text!='':        
+                self.inter.set_text(text)
             if a==0:
                 self.inter.end()
             elif a==1:
                 #self.inter.set_text(str(self.game)) #eventually, will draw it
                 tile,flrs,stus=self.game.draw_data()
                 self.inter.draw(tile,flrs,stus)
-            #elif type(a)==str:
-            self.inter.set_text(text)
+            elif type(a)==str:
+                self.inter.set_text(a)
