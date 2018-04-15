@@ -1,0 +1,4 @@
+config_test=N
+tile_size=100
+collision_efficiency=.5
+scale=10
