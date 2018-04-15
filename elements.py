@@ -1,4 +1,5 @@
 import math
+import re
 tile_size=100
 class id_manager(object):
     curr_id=0
@@ -7,12 +8,41 @@ class id_manager(object):
         self.curr_id+=1
         return val
 ids=id_manager()
+def split_args(comm):
+    '''splits up large 'name=val' into a dictionary of name:val'''
+    vals={}
+    names=re.findall('(\S+)\s?=',comm)
+    values=re.findall("=\s?([\d\.\-]+|'?\S+'?)",comm)
+    for i in range(len(names)):
+        vals[names[i]]=values[i]
+    return vals
+def type_from_string(var, string):
+    '''Goes through the logic of string says 'int', so make var int'''
+    try:
+        if string=='int':
+            return int(var)
+        elif string=='str':
+            return str(var)
+        elif string=='float':
+            return float(var)
+    except ValueError:
+        print "invalid value for type"
+        if string=='int' or string=='float':
+            return 0
+        if string=='str':
+            return ''
 class floor(object):
+    arg_order=['x','y','sprite','color']
+    arg_types=['float','float','str','str']
     def __init__(self, x, y, sprite, color):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
         self.color=color
+    @classmethod
+    def from_comm(cls, comm):
+        vals=split_args(comm)
+        use=[]#too tired to code right now...
 class ground(floor):
     def __init__(self, x, y):
         floor.__init__(self, x, y, '.', 'white')
