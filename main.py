@@ -1,4 +1,5 @@
 import world
+import elements #eventually, this won't be called
 help_string='''To make the game advance a tick, press enter with the text box empty
 To quit the game, enter 'q'
 To see this again, enter 'help\''''
@@ -27,18 +28,18 @@ class game(object):
                 self.w.diagnose()
             self.w.tick()
     def setup_ball_wall_coll(self):
-        a=world.boulder(0,0,25,0,0)
-        b=world.rock(2,0)
+        a=elements.boulder(0,0,25,0,0)
+        b=elements.rock(2,0)
         self.w.ground()
         self.w.add_struc(a)
         self.w.add_struc(b)
         print self.w
     def setup_2(self):
-        wall=world.rock(5,5)
-        left=world.boulder(0,5,25,0,0)
-        top=world.boulder(5,0,0,20,0)
-        right=world.boulder(10,5,-13,0,0)
-        bottom=world.boulder(5,10,0,-7,0)
+        wall=elements.rock(5,5)
+        left=elements.boulder(0,5,25,0,0)
+        top=elements.boulder(5,0,0,20,0)
+        right=elements.boulder(10,5,-13,0,0)
+        bottom=elements.boulder(5,10,0,-7,0)
         self.w.ground()
         self.w.add_struc(wall)
         self.w.add_struc(left)
@@ -69,6 +70,12 @@ class game(object):
         return str(self.w)
     def draw_data(self):
         return self.w.fancy_print()
+    def add(self, command):
+        pass
+        if not command.startswith("spawn"):
+            print "Error: command of '%s' was identified as a spawn command"%command
+            return False
+        return self.w.spawn(command)
 import interface
 class master(object):
     def __init__(self):

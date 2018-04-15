@@ -82,8 +82,8 @@ class interface(object):
     def draw(self, tile, floors, strucs):
         width=int(self.c.config()['width'][4])
         height=int(self.c.config()['height'][4])
-        print width
-        print height
+        #print width
+        #print height
         scalex=1.0*width/scale
         ratiox=scalex/tile
         scaley=1.0*height/scale

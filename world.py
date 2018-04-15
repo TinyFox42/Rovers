@@ -1,13 +1,13 @@
-import math
+import elements
 tile_size=100 #how many processed units are in the displayed unit, both with tile dimensions and time
 collision_efficiency=.5 #how much of the velocity stays when a boulder and rock collide
-class id_manager(object):
+'''class id_manager(object):
     curr_id=0
     def next_id(self):
         val=self.curr_id
         self.curr_id+=1
         return val
-ids=id_manager()
+ids=id_manager()'''
 class world(object):
     def __init__(self, x=10, y=10):
         '''Makes a new world object, with dimensions x and y'''
@@ -22,7 +22,7 @@ class world(object):
         '''Fills in the grid with blank floors'''
         for i in range(self.x):
             for j in range(self.y):
-                self.floors.append(ground(i,j))
+                self.floors.append(elements.ground(i,j))
     def add_struc(self, struc):
         self.structures.append(struc)
         struc.assign_world(self)
@@ -85,6 +85,9 @@ class world(object):
         for stu in self.structures:
             structures.append([stu.x,stu.y,stu.size,stu.color])
         return tile_size, floors, structures
+    def spawn(self, command):
+        pass
+        parts=command.split(' ')
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
@@ -175,10 +178,7 @@ def coll_w_w(a,b):
     print "Wall-wall collisions are not yet coded"
     a.ded, b.ded=True, True
     return
-class null_world(object):
-    '''Has all the functions needed for an object to be tested, without actually being a world'''
-    pass
-class floor(object):
+'''class floor(object):
     def __init__(self, x, y, sprite, color):
         self.x=x*tile_size
         self.y=y*tile_size
@@ -267,4 +267,4 @@ class boulder(structure):
         vals=[self.dx,self.dy,self.k]
         for i in range(len(varbs)):
             val+= "\n\t%s: %s"%(str(varbs[i]),str(vals[i]))
-        return val
+        return val'''
