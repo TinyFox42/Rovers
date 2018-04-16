@@ -12,9 +12,15 @@ def split_args(comm):
     '''splits up large 'name=val' into a dictionary of name:val'''
     vals={}
     names=re.findall('(\S+)\s?=',comm)
-    values=re.findall("=\s?([\d\.\-]+|'?\S+'?)",comm)
+    values=re.findall("=\s?([\d\.\-]+|['\"]\S+['\"])",comm)
     for i in range(len(names)):
-        vals[names[i]]=values[i]
+        if values[i].startswith("'"):
+            vals[names[i]]=values[i][1:-1]
+        else:
+            try:
+                vals[names[i]]=float(values[i])
+            except ValueError:
+                vals[names[i]]=values[i]
     return vals
 def type_from_string(var, string):
     '''Goes through the logic of string says 'int', so make var int'''
@@ -32,9 +38,8 @@ def type_from_string(var, string):
         if string=='str':
             return ''
 class floor(object):
-    arg_order=['x','y','sprite','color']
-    arg_types=['float','float','str','str']
-    def __init__(self, x, y, sprite, color):
+    args=['x','y','sprite','color']
+    def __init__(self, x=0, y=0, sprite=' ', color='white'):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
@@ -42,13 +47,18 @@ class floor(object):
     @classmethod
     def from_comm(cls, comm):
         vals=split_args(comm)
-        use=[]#too tired to code right now...
+        for val in vals.keys():
+            if val not in cls.args:
+                vals.pop(val)
+        return cls(**vals)
 class ground(floor):
-    def __init__(self, x, y):
+    args=['x','y']
+    def __init__(self, x=0, y=0):
         floor.__init__(self, x, y, '.', 'white')
 class structure(object):
     type_name="Generic structure"
-    def __init__(self, x, y, sprite,color, box_length, collision_class):
+    args=['x','y','sprite','color','box_length','collision_class']
+    def __init__(self, x=0, y=0, sprite=' ',color='white', box_length=1, collision_class='wall'):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
@@ -59,6 +69,13 @@ class structure(object):
         self.coll=collision_class
         self.color=color
         #need to add in dx and dy eventually
+    @classmethod
+    def from_comm(cls, comm):
+        vals=split_args(comm)
+        for val in vals.keys():
+            if val not in cls.args:
+                vals.pop(val)
+        return cls(**vals)
     def tick(self):
         pass
     def assign_world(self, world):
@@ -72,7 +89,7 @@ class structure(object):
         return val
 class rock(structure):
     type_name="Rock"
-    def __init__(self, x,y, sprite='*',color='black', box_length=1, collision_class='wall'):
+    def __init__(self, x=0,y=0, sprite='*',color='black', box_length=1, collision_class='wall'):
         structure.__init__(self,x,y,sprite,color,box_length, collision_class)
         self.dx,self.dy=0,0
     def diagnose(self):
@@ -84,7 +101,8 @@ class rock(structure):
         return val
 class boulder(structure):
     type_name="Boulder"
-    def __init__(self, x, y, speedx, speedy, friction, sprite='o',color='brown', box_length=1, collision_class='ball'):
+    args=['x','y','speedx','speedy','friction','sprite','color','box_length','collision_class']
+    def __init__(self, x=0, y=0, speedx=0, speedy=0, friction=0, sprite='o',color='brown', box_length=1, collision_class='ball'):
         structure.__init__(self, x, y, sprite,color,box_length,collision_class)
         self.dx=speedx
         self.dy=speedy
