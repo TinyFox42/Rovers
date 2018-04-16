@@ -1,4 +1,9 @@
-import elements
+import elements as els
+comm_creators={'floor':els.floor.from_comm,
+                'ground':els.ground.from_comm,
+                'structure':els.structure.from_comm,
+                'rock':els.rock.from_comm,
+                'boulder':els.boulder.from_comm}
 tile_size=100 #how many processed units are in the displayed unit, both with tile dimensions and time
 collision_efficiency=.5 #how much of the velocity stays when a boulder and rock collide
 '''class id_manager(object):
@@ -22,7 +27,7 @@ class world(object):
         '''Fills in the grid with blank floors'''
         for i in range(self.x):
             for j in range(self.y):
-                self.floors.append(elements.ground(i,j))
+                self.floors.append(els.ground(i,j))
     def add_struc(self, struc):
         self.structures.append(struc)
         struc.assign_world(self)
@@ -88,6 +93,11 @@ class world(object):
     def spawn(self, command):
         pass
         parts=command.split(' ')
+        if parts[1] in comm_creators.keys():
+            comm=" ".join(parts[2:])
+            comm_creators[parts[1]](comm)
+        else:
+            print "make sure that the second word is a element name"
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':
