@@ -1,9 +1,9 @@
 import elements as els
-comm_creators={'floor':els.floor.from_comm,
-                'ground':els.ground.from_comm,
-                'structure':els.structure.from_comm,
-                'rock':els.rock.from_comm,
-                'boulder':els.boulder.from_comm}
+comm_creators={'floor':els.floor,
+                'ground':els.ground,
+                'structure':els.structure,
+                'rock':els.rock,
+                'boulder':els.boulder}
 tile_size=100 #how many processed units are in the displayed unit, both with tile dimensions and time
 collision_efficiency=.5 #how much of the velocity stays when a boulder and rock collide
 '''class id_manager(object):
@@ -95,7 +95,7 @@ class world(object):
         parts=command.split(' ')
         if parts[1] in comm_creators.keys():
             comm=" ".join(parts[2:])
-            comm_creators[parts[1]](comm)
+            comm_creators[parts[1]].from_comm(comm)
         else:
             print "make sure that the second word is a element name"
 def calculate_collision(a,b):
