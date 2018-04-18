@@ -95,9 +95,17 @@ class world(object):
         parts=command.split(' ')
         if parts[1] in comm_creators.keys():
             comm=" ".join(parts[2:])
-            comm_creators[parts[1]].from_comm(comm)
+            a=comm_creators[parts[1]].from_comm(comm)
+            if not a:
+                return "Invalid command"
+            if a.is_floor():
+                print "Now I need to rework the floor system... :("
+            else:
+                self.add_struc(a)
         else:
             print "make sure that the second word is a element name"
+            return 1
+        return 1
 def calculate_collision(a,b):
     if a.coll=='ball':
         if b.coll=='ball':

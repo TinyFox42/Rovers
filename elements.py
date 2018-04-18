@@ -13,6 +13,8 @@ def split_args(comm):
     vals={}
     names=re.findall('(\S+)\s?=',comm)
     values=re.findall("=\s?([\d\.\-]+|['\"]\S+['\"])",comm)
+    if len(values)!=len(names):
+        return False
     for i in range(len(names)):
         if values[i].startswith("'"):
             vals[names[i]]=values[i][1:-1]
@@ -47,10 +49,14 @@ class floor(object):
     @classmethod
     def from_comm(cls, comm):
         vals=split_args(comm)
+        if not vals:
+            return False#later on, have this print something
         for val in vals.keys():
             if val not in cls.args:
                 vals.pop(val)
         return cls(**vals)
+    def is_floor(self):
+        return True
 class ground(floor):
     args=['x','y']
     def __init__(self, x=0, y=0):
@@ -72,6 +78,8 @@ class structure(object):
     @classmethod
     def from_comm(cls, comm):
         vals=split_args(comm)
+        if not vals:
+            return False #later on, print something
         for val in vals.keys():
             if val not in cls.args:
                 vals.pop(val)
@@ -87,6 +95,8 @@ class structure(object):
         for i in range(len(varbs)):
             val+= "\n\t%s: %s"%(str(varbs[i]),str(vals[i]))
         return val
+    def is_floor(self):
+        return False
 class rock(structure):
     type_name="Rock"
     def __init__(self, x=0,y=0, sprite='*',color='black', box_length=1, collision_class='wall'):

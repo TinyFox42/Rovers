@@ -55,6 +55,8 @@ class game(object):
             1:Tick was run, print the world
             0:Game should now quit
             Something else:Print that
+        Output2:
+            String to print if a string wasn't passed as output1
         '''
         text=self.w.diagnose()
         if command=='':
@@ -64,14 +66,15 @@ class game(object):
             return 0,text
         elif command=='help':
             return help_string, ''
+        elif command.startswith('spawn'):
+            return self.add(command), text
         '''elif command=='d':
-            return self.w.diagnose()'''
+            return self.w.diagnose()#now automatically called'''
     def __repr__(self):
         return str(self.w)
     def draw_data(self):
         return self.w.fancy_print()
     def add(self, command):
-        pass
         if not command.startswith("spawn"):
             print "Error: command of '%s' was identified as a spawn command"%command
             return False
