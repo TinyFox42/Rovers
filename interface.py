@@ -1,5 +1,6 @@
 #Will handel most of the GUI
-scale=10#How many tiles there are per side
+import config_manager as cm
+scale=cm.config['scale']#10#How many tiles there are per side
 from Tkinter import *
 class interface(object):
     

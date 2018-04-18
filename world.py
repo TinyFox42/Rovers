@@ -1,11 +1,13 @@
 import elements as els
+import config_manager as cm
 comm_creators={'floor':els.floor,
                 'ground':els.ground,
                 'structure':els.structure,
                 'rock':els.rock,
                 'boulder':els.boulder}
-tile_size=100 #how many processed units are in the displayed unit, both with tile dimensions and time
+tile_size=cm.config['tile_size']#100 #how many processed units are in the displayed unit, both with tile dimensions and time
 collision_efficiency=.5 #how much of the velocity stays when a boulder and rock collide
+                        #filler for now
 '''class id_manager(object):
     curr_id=0
     def next_id(self):

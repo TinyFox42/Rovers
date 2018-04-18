@@ -1,6 +1,7 @@
 import math
 import re
-tile_size=100
+import config_manager as cm
+tile_size=cm.config['tile_size']#100
 class id_manager(object):
     curr_id=0
     def next_id(self):
