@@ -6,7 +6,7 @@ To see this again, enter 'help\''''
 class game(object):
     def __init__(self, setup=0):
         self.w=world.world()
-        if setup==0:
+        if setup==0: 
             self.w.ground()
         elif setup==1:
             self.setup_ball_wall_coll()
