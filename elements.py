@@ -9,22 +9,6 @@ class id_manager(object):
         self.curr_id+=1
         return val
 ids=id_manager()
-def split_args(comm):
-    '''splits up large 'name=val' into a dictionary of name:val'''
-    vals={}
-    names=re.findall('(\S+)\s?=',comm)
-    values=re.findall("=\s?([\d\.\-]+|['\"]\S+['\"])",comm)
-    if len(values)!=len(names):
-        return False
-    for i in range(len(names)):
-        if values[i].startswith("'"):
-            vals[names[i]]=values[i][1:-1]
-        else:
-            try:
-                vals[names[i]]=float(values[i])
-            except ValueError:
-                vals[names[i]]=values[i]
-    return vals
 def type_from_string(var, string):
     '''Goes through the logic of string says 'int', so make var int'''
     try:
@@ -40,29 +24,59 @@ def type_from_string(var, string):
             return 0
         if string=='str':
             return ''
-class floor(object):
+class element(object):
+    '''Basic map element class'''
     args=['x','y','sprite','color']
     def __init__(self, x=0, y=0, sprite=' ', color='white'):
         self.x=x*tile_size
         self.y=y*tile_size
         self.sprite=sprite
         self.color=color
+    @staticmethod
+    def split_args(comm):
+        '''splits up large 'name=val' into a dictionary of name:val'''
+        vals={}
+        names=re.findall('(\S+)\s?=',comm)
+        values=re.findall("=\s?([\d\.\-]+|['\"]\S+['\"])",comm)
+        if len(values)!=len(names):
+            #print len(values)
+            #print len(names)
+            return False
+        for i in range(len(names)):
+            if values[i].startswith("'"):
+                vals[names[i]]=values[i][1:-1]
+            else:
+                try:
+                    vals[names[i]]=float(values[i])
+                except ValueError:
+                    vals[names[i]]=values[i]
+        return vals
     @classmethod
     def from_comm(cls, comm):
-        vals=split_args(comm)
-        if not vals:
-            return False#later on, have this print something
+        vals=cls.split_args(comm)
+        if vals==False:
+            #print "umm..."
+            return False
         for val in vals.keys():
             if val not in cls.args:
                 vals.pop(val)
         return cls(**vals)
+    def is_floor(self):
+        return False
+class floor(element):
+    args=['x','y','sprite','color']
+    def __init__(self, x=0, y=0, sprite=' ', color='white'):
+        self.x=x*tile_size
+        self.y=y*tile_size
+        self.sprite=sprite
+        self.color=color
     def is_floor(self):
         return True
 class ground(floor):
     args=['x','y']
     def __init__(self, x=0, y=0):
         floor.__init__(self, x, y, '.', 'white')
-class structure(object):
+class structure(element):
     type_name="Generic structure"
     args=['x','y','sprite','color','box_length','collision_class']
     def __init__(self, x=0, y=0, sprite=' ',color='white', box_length=1, collision_class='wall'):
@@ -76,15 +90,6 @@ class structure(object):
         self.coll=collision_class
         self.color=color
         #need to add in dx and dy eventually
-    @classmethod
-    def from_comm(cls, comm):
-        vals=split_args(comm)
-        if not vals:
-            return False #later on, print something
-        for val in vals.keys():
-            if val not in cls.args:
-                vals.pop(val)
-        return cls(**vals)
     def tick(self):
         pass
     def assign_world(self, world):
