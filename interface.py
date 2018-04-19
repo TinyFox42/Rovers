@@ -93,7 +93,7 @@ class interface(object):
         #print self.c.config()['height']
         #print ratio
         for floor in floors:
-            self.c.create_rectangle(max(floor[0]*ratiox,0),max(floor[1]*ratioy,0),min(floor[0]*ratiox+scalex,width),min(floor[1]*ratioy+scaley,height),fill=floor[2])
+            self.c.create_rectangle(max(floor[0]*ratiox,0),max(floor[1]*ratioy,0),min((floor[0]+floor[2])*ratiox,width),min((floor[1]+floor[3])*ratioy+scaley,height),fill=floor[4])
         for struc in strucs:
             self.c.create_rectangle(max(struc[0]*ratiox,0),max(struc[1]*ratioy,0),min(struc[0]*ratiox+struc[2]*ratiox,width),min(struc[1]*ratioy+struc[2]*ratioy,height),fill=struc[3])
         

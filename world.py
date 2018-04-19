@@ -26,22 +26,21 @@ class world(object):
         for i in range(y):
             self.view.append(['']*x)
     def ground(self):
-        '''Fills in the grid with blank floors'''
-        for i in range(self.x):
-            for j in range(self.y):
-                self.floors.append(els.ground(i,j))
+        '''makes a background'''
+        self.floors.append(els.ground(0,0,self.x,self.y))
     def add_struc(self, struc):
         self.structures.append(struc)
         struc.assign_world(self)
     def __str__(self):
         for floor in self.floors:
-            x=(floor.x)/tile_size
-            y=(floor.y)/tile_size
-            if not (0<=x<self.x and 0<=y<self.y):
-                print "Something is out of bounds"
-                continue
+            x1=(floor.x)/tile_size
+            y1=(floor.y)/tile_size
             sprite=floor.sprite
-            self.view[y][x]=sprite
+            x2=(floor.sx+floor.x)/tile_size
+            y2=(floor.sy+floor.y)/tile_size
+            for x in range(x1,x2):
+                for y in range(y1,y2):        
+                    self.view[y][x]=sprite
         for struc in self.structures:
             x=int(struc.x)/tile_size#because the plan is to later on move away from just printing stuff. This works for now
             y=int(struc.y)/tile_size
@@ -87,7 +86,7 @@ class world(object):
         '''Returns the values needed to draw it'''
         floors=[]
         for flr in self.floors:
-            floors.append([flr.x,flr.y,flr.color])
+            floors.append([flr.x,flr.y,flr.sx,flr.sy,flr.color])
         structures=[]
         for stu in self.structures:
             structures.append([stu.x,stu.y,stu.size,stu.color])

@@ -68,8 +68,9 @@ class game(object):
             return help_string, ''
         elif command.startswith('spawn'):
             return self.add(command), text
-        '''elif command=='d':
-            return self.w.diagnose()#now automatically called'''
+        elif command=='d':
+            return self.w.diagnose(),''#now automatically called
+        return 1,''
     def __repr__(self):
         return str(self.w)
     def draw_data(self):
@@ -103,7 +104,7 @@ class master(object):
     def mainloop(self):
         while True:
             ans=raw_input(">")
-            a=self.game.tick(ans)
+            a,blah=self.game.tick(ans)
             if a==0:
                 return
             elif a==1:

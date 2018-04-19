@@ -64,18 +64,21 @@ class element(object):
     def is_floor(self):
         return False
 class floor(element):
-    args=['x','y','sprite','color']
-    def __init__(self, x=0, y=0, sprite=' ', color='white'):
+    '''So, I realized that the base case is there being ground, so now this is just background, holes & stuff will be structures'''
+    args=['x','y','sizex','sizey','sprite','color']
+    def __init__(self, x=0, y=0, sizex=1, sizey=1, sprite=' ', color='white'):
         self.x=x*tile_size
         self.y=y*tile_size
+        self.sx=sizex*tile_size
+        self.sy=sizey*tile_size
         self.sprite=sprite
         self.color=color
     def is_floor(self):
         return True
 class ground(floor):
-    args=['x','y']
-    def __init__(self, x=0, y=0):
-        floor.__init__(self, x, y, '.', 'white')
+    args=['x','y', 'sizex','sizey']
+    def __init__(self, x=0, y=0, sizex=1,sizey=1):
+        floor.__init__(self, x, y,sizex,sizey, '.', 'white')
 class structure(element):
     type_name="Generic structure"
     args=['x','y','sprite','color','box_length','collision_class']
