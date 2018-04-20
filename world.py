@@ -119,9 +119,58 @@ def calculate_collision(a,b):
         elif b.coll=='wall':
             coll_w_w(a,b)
 def coll_b_b(a,b):
-    print "Ball-ball collisions are not yet coded"
-    a.ded, b.ded=True, True
-    return
+    #print "Ball-ball collisions are not yet coded"
+    #a.ded, b.ded=True, True
+    #return
+    farx,fary=False, False
+    if (b.x<(a.x+a.size)<=(b.x+b.size)):
+        farx=True
+    if (b.y<(a.y+a.size)<=(b.y+b.size)):
+        fary=True
+    rdx=abs(a.last_tick['dx']-b.last_tick['dx'])
+    rdy=abs(a.last_tick['dy']-b.last_tick['dy'])
+    rx,ry=0,0
+    if not(b.last_tick['x']<=a.last_tick['x']<(b.last_tick['x']+b.size)):#if last tick it wasn't inside the thing
+        rx=a.last_tick['x']-(b.last_tick['x']+b.size)
+    elif farx and not (b.last_tick['x']<(a.last_tick['x']+a.size)<=(b.last_tick['x']+b.size)):#if the far side wasn't inside the thing last tick
+        rx=b.last_tick['x']-(a.last_tick['x']+a.size)
+    if not(b.last_tick['y']<=a.last_tick['y']<(b.last_tick['y']+b.size)):
+        ry=a.last_tick['y']-(b.last_tick['y']+b.size)
+    elif fary and not (b.last_tick['y']<(a.last_tick['y']+a.size)<=(b.last_tick['y']+b.size)):
+        ry=b.last_tick['y']-(a.last_tick['y']+a.size)
+    rx=abs(rx)
+    ry=abs(ry)
+    tx,ty=0,0
+    if rdx!=0:
+        tx=rx/rdx #the time it takes for the x's to intercept
+    if rdy!=0:
+        ty=ry/rdy 
+    if (tx>=ty):#If it collided along the side where x is constant
+        pass
+        side='left'
+        if farx: side='right';
+        print "%s collided with %s on the %s side"%(a.sId, b.sId, side);
+        if side=='left':
+            a.dx=-(a.dx*collision_efficiency)
+            a.x=b.x+b.size
+            b.dx=-(b.dx*collision_efficiency)
+            
+        else:
+            a.dx=-(a.dx*collision_efficiency)
+            a.x=b.x-a.size
+            b.dx=-(b.dx*collision_efficiency)
+    if tx<=ty:
+        side='top'
+        if fary:side='bottom';
+        print "%s collided with %s on the %s"%(a.sId, b.sId, side);
+        if side=='top':
+            a.dy=-(a.dy*collision_efficiency)
+            a.y=b.y+b.size
+            b.dy=-(b.dy*collision_efficiency)
+        else:
+            a.dy=-(a.dy*collision_efficiency)
+            a.y=b.y-a.size
+            b.dy=-(b.dy*collision_efficiency)
 def coll_b_w(a,b):
     '''Calculates what happens in a colision betweel ball a and wall b'''
     #print "Ball-wall collisions are not yet coded"

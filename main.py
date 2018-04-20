@@ -49,6 +49,20 @@ class game(object):
         print self.w
         #if raw_input("Good? ").strip().lower()=='y':
         #self.run()
+        
+    def setup_3(self):
+        b1=elements.boulder(0,0,0,0,0)
+        b2=elements.boulder(2,0,-5,0,0)
+        b3=elements.boulder(0,5,2,0,0)
+        b4=elements.boulder(9,5,-2,0,0)
+        b5=elements.boulder(0,3,0,-2,0)
+        self.w.ground()
+        self.w.add_struc(b1)
+        self.w.add_struc(b2)
+        self.w.add_struc(b3)
+        self.w.add_struc(b4)
+        self.w.add_struc(b5)
+        
     def tick(self, command):
         '''Reads the command and acts on it
         Outputs:
