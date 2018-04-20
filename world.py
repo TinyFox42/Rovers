@@ -152,7 +152,7 @@ def coll_b_b(a,b):
         print "%s collided with %s on the %s side"%(a.sId, b.sId, side);
         if side=='left':
             a.dx=-(a.dx*collision_efficiency)
-            a.x=b.x+b.size
+            a.x=b.x+b.size#so, this should change to the previous speed times the distance, with a bit more calculations
             b.dx=-(b.dx*collision_efficiency)
             
         else:
