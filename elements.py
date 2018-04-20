@@ -124,6 +124,11 @@ class structure(element):
         return val
     def is_floor(self):
         return False
+class wall(structure):
+    type_name='Wall'
+    args=['x','y','sprite','color','box_length','collision_class']
+    def __init__(self, x=0,y=0,sprite='W',color='grey',box_length=1,collision_class='wall'):
+        structure.__init__(self,x,y,0,0,1000,sprite,color,box_length,collision_class)
 class rock(structure):
     type_name="Rock"
     def __init__(self, x=0,y=0,speedx=0,speedy=0,friction=5, sprite='*',color='black', box_length=1, collision_class='wall'):
