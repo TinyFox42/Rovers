@@ -10,6 +10,7 @@ class interface(object):
         self.root=Tk()
         #f=Frame(self.root)
         self.c=Canvas(self.root, width=x*10, height=y*10)
+        self.c.bind("<Configure>",self.configure)
         #self.c=Canvas(f, width=x*10, height=y*10)
         #self.c.pack()
         self.c.create_rectangle(0,0,10,10, fill='red')
@@ -97,3 +98,15 @@ class interface(object):
         for struc in strucs:
             self.c.create_rectangle(max(struc[0]*ratiox,0),max(struc[1]*ratioy,0),min(struc[0]*ratiox+struc[2]*ratiox,width),min(struc[1]*ratioy+struc[2]*ratioy,height),fill=struc[3])
         
+    def configure(self, event):
+        w=event.width
+        h=event.height
+        s=min(w,h)
+        self.c.config(height=s,width=s)
+        '''self.c.delete("all")
+        w, h = event.width, event.height
+        xy = 0, 0, w-1, h-1
+        self.c.create_rectangle(xy)
+        self.c.create_line(xy)
+        xy = w-1, 0, 0, h-1
+        self.c.create_line(xy)'''
