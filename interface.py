@@ -8,16 +8,19 @@ class interface(object):
     def __init__(self, master, x, y):  
         self.master=master      
         self.root=Tk()
+        self.root.bind("<Configure>",self.configure)
         #f=Frame(self.root)
+        self.cf=Frame(self.root)
         self.c=Canvas(self.root, width=x*10, height=y*10)
-        self.c.bind("<Configure>",self.configure)
+        #self.c.bind("<Configure>",self.configure)
         #self.c=Canvas(f, width=x*10, height=y*10)
         #self.c.pack()
         self.c.create_rectangle(0,0,10,10, fill='red')
         self.v=StringVar()
         self.v.trace('w',self.edited)
         self.start=''
-        self.l=Entry(self.root, textvariable=self.v, width=40)
+        self.lf=Frame(self.root)
+        self.l=Entry(self.lf, textvariable=self.v, width=40)
         self.l.bind('<Return>', self.send_up)
         #self.l.pack()
         #self.t=Text(self.root, state=NORMAL,height=12, width=40)
@@ -25,10 +28,11 @@ class interface(object):
         self.t.mark_set("start", INSERT)
         self.t.mark_gravity("start", LEFT)
         self.t.insert(INSERT, 'Enter setup number:')
-        self.t.config(state=NORMAL)
+        self.t.config(state=DISABLED)
         #self.t=Text(f, state=DISABLED, height=10, width=10)
         self.c.grid(row=0, sticky='nsew')
-        self.l.grid(row=1, columnspan=2, sticky='we')
+        self.lf.grid(row=1, columnspan=2, sticky='we')
+        self.l.grid(row=0, sticky='we')
         #self.t.grid(row=0, column=1, sticky='nsew')
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
@@ -41,15 +45,15 @@ class interface(object):
         #self.root.mainloop()
         #print "test"
     def make_text_box(self):
-        frame=Frame(self.root, bd=2, relief=SUNKEN)
-        frame.grid_rowconfigure(0,weight=1)
-        frame.grid_columnconfigure(0,weight=1)
-        scrollbar=Scrollbar(frame)
+        self.tf=Frame(self.root, bd=2, relief=SUNKEN)
+        self.tf.grid_rowconfigure(0,weight=1)
+        self.tf.grid_columnconfigure(0,weight=1)
+        scrollbar=Scrollbar(self.tf)
         scrollbar.grid(row=0,column=1,sticky='ns')
-        self.t=Text(frame, yscrollcommand=scrollbar.set, state=NORMAL,height=12, width=40)
+        self.t=Text(self.tf, yscrollcommand=scrollbar.set, state=NORMAL,height=12, width=40)
         self.t.grid(row=0,column=0,sticky='nsew')
         scrollbar.config(command=self.t.yview)
-        frame.grid(row=0,column=1,sticky='nsew')
+        self.tf.grid(row=0,column=1,sticky='nsew')
     def startup(self):
         self.root.mainloop()
     def stuff(self,event):
@@ -98,11 +102,13 @@ class interface(object):
         for struc in strucs:
             self.c.create_rectangle(max(struc[0]*ratiox,0),max(struc[1]*ratioy,0),min(struc[0]*ratiox+struc[2]*ratiox,width),min(struc[1]*ratioy+struc[2]*ratioy,height),fill=struc[3])
         
-    def configure(self, event):
+    def configure(self, event):#might work...
         w=event.width
         h=event.height
-        s=min(w,h)
+        h-=self.lf.config()['height'][4]
+        s=min(h, w/2)
         self.c.config(height=s,width=s)
+        self.tf.config(width=w-s)
         '''self.c.delete("all")
         w, h = event.width, event.height
         xy = 0, 0, w-1, h-1
