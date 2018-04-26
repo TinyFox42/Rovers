@@ -10,8 +10,8 @@ class interface(object):
         self.root=Tk()
         self.root.bind("<Configure>",self.configure)
         #f=Frame(self.root)
-        self.cf=Frame(self.root)
-        self.c=Canvas(self.root, width=x*10, height=y*10)
+        self.cf=Frame(self.root, width=x*10, height=y*10)
+        self.c=Canvas(self.cf, width=x*10, height=y*10)
         #self.c.bind("<Configure>",self.configure)
         #self.c=Canvas(f, width=x*10, height=y*10)
         #self.c.pack()
@@ -19,8 +19,8 @@ class interface(object):
         self.v=StringVar()
         self.v.trace('w',self.edited)
         self.start=''
-        self.lf=Frame(self.root)
-        self.l=Entry(self.lf, textvariable=self.v, width=40)
+        #self.lf=Frame(self.root)
+        self.l=Entry(self.root, textvariable=self.v, width=40)
         self.l.bind('<Return>', self.send_up)
         #self.l.pack()
         #self.t=Text(self.root, state=NORMAL,height=12, width=40)
@@ -30,9 +30,10 @@ class interface(object):
         self.t.insert(INSERT, 'Enter setup number:')
         self.t.config(state=DISABLED)
         #self.t=Text(f, state=DISABLED, height=10, width=10)
+        self.cf.grid(row=0, sticky='nsew')
         self.c.grid(row=0, sticky='nsew')
-        self.lf.grid(row=1, columnspan=2, sticky='we')
-        self.l.grid(row=0, sticky='we')
+        self.l.grid(row=1, columnspan=2, sticky='we')
+        #self.l.grid(row=0, sticky='we')
         #self.t.grid(row=0, column=1, sticky='nsew')
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
@@ -103,12 +104,12 @@ class interface(object):
             self.c.create_rectangle(max(struc[0]*ratiox,0),max(struc[1]*ratioy,0),min(struc[0]*ratiox+struc[2]*ratiox,width),min(struc[1]*ratioy+struc[2]*ratioy,height),fill=struc[3])
         
     def configure(self, event):#might work...
-        w=event.width
-        h=event.height
-        h-=self.lf.config()['height'][4]
-        s=min(h, w/2)
+        w=self.cf.config()['width'][4]#event.width
+        h=self.cf.config()['height'][4]#event.height
+        #h-=self.lf.config()['height'][4]
+        s=min(h, w)
         self.c.config(height=s,width=s)
-        self.tf.config(width=w-s)
+        #self.tf.config(width=w-s)
         '''self.c.delete("all")
         w, h = event.width, event.height
         xy = 0, 0, w-1, h-1
