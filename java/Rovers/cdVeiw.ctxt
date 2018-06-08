@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=cdVeiw
+comment1.params=args
+comment1.target=cdVeiw(java.lang.String[])
+comment2.params=note
+comment2.target=void\ notify(java.lang.String)
+comment3.params=
+comment3.target=void\ end()
+comment4.params=question
+comment4.target=java.lang.String\ ask(java.lang.String)
+comment5.params=obs
+comment5.target=void\ draw(java.util.ArrayList)
+numComments=6

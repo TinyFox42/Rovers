@@ -1,5 +1,9 @@
 #BlueJ class context
 comment0.target=game
-comment1.params=
-comment1.target=void\ main()
-numComments=2
+comment1.params=master
+comment1.target=game(veiwer)
+comment2.params=setup
+comment2.target=void\ create(java.lang.String)
+comment3.params=command
+comment3.target=void\ processCommand(java.lang.String)
+numComments=4
