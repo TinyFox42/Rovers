@@ -29,12 +29,18 @@ public class cdVeiw implements veiwer
     }
     public void draw(ArrayList<obj> obs){
         map="";
-        ArrayList<ArrayList<String>> temp=new ArrayList();
-        temp.add(new ArrayList());
+        String [][] map=new String[10][10];//Yeah, for now max map is 10X10
+        ////Should probably set them all to .s here
+        //For the record, for the GUI I should look into AWT
+        //Seems to be like tkinter, but in this case I will be working with java
         for(int i=0; i<obs.size(); i++){
             obj t=obs.get(i);
-            int x=t.get_x();
-            
+            if(0<=t.get_x()&&t.get_x()<=9&&0<=t.get_y()&&t.get_y()<=9){
+                map[t.get_y()][t.get_x()]=t.draw();
+            }
+            else{
+                System.out.println("Something is out of bounds");
+            }
         }
     }
 }
