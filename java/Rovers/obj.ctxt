@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=obj
+comment0.text=\r\n\ Abstract\ class\ for\ everything\ on\ the\ map\r\n\r\n\ @Eli\r\n\ @0.1\r\n
+comment1.params=x\ y
+comment1.target=obj(int,\ int)
+comment2.params=
+comment2.target=int\ get_x()
+comment3.params=
+comment3.target=int\ get_y()
+comment4.params=
+comment4.target=void\ tick()
+comment5.params=
+comment5.target=java.lang.String\ draw()
+comment6.params=
+comment6.target=java.lang.String\ name()
+comment7.params=
+comment7.target=java.lang.String\ desc()
+numComments=8
