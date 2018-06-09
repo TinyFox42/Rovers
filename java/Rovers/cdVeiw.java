@@ -42,7 +42,7 @@ public class cdVeiw implements veiwer
         ////Should probably set them all to .s here
         for(int i=0; i<10; i++){
             for(int j=0; j<10; j++){
-                temp[i][j]=" ";
+                temp[i][j]=".";//I think "....." is more clear than "     "
             }
         }
         //For the record, for the GUI I should look into AWT
