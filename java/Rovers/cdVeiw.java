@@ -13,9 +13,18 @@ public class cdVeiw implements veiwer
     private String map;
     private game g;
     private boolean running=true;
-    public cdVeiw(String [] args){
+    public cdVeiw(){
         s=new Scanner(System.in);
         g=new game(this);
+    }
+    public void start(){
+        g.create();
+        while(running){
+            System.out.print(map);
+            System.out.print(">");
+            String comm=s.next();
+            g.processCommand(comm);
+        }
     }
     public void notify(String note){
         System.out.println(note);
@@ -24,7 +33,7 @@ public class cdVeiw implements veiwer
         running=false;
     }
     public String ask(String question){
-        System.out.println(question);
+        System.out.print(question);
         return s.next();
     }
     public void draw(ArrayList<obj> obs){

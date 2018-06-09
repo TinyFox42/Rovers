@@ -8,6 +8,7 @@
 public class controll
 {
     public static void main(String [] args){
+        //veiwer test=new cdVeiw({"a"});
         
     }
 }
