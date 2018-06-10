@@ -26,5 +26,7 @@ public class rock extends obj
     public String draw(){
         return "*";
     }
-    public void tick(){}
+    public void tick(){
+        System.out.println("Test");
+    }
 }
