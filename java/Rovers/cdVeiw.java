@@ -13,6 +13,10 @@ public class cdVeiw implements veiwer
     private String map;
     private game g;
     private boolean running=true;
+    public static void main(){
+        cdVeiw main=new cdVeiw();
+        main.start();
+    }
     public cdVeiw(){
         s=new Scanner(System.in);
         g=new game(this);
