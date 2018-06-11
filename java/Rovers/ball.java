@@ -34,7 +34,11 @@ public class ball extends obj
         return "o";
     }
     public void tick(){
+        //System.out.println(get_x());
         change_x(dx);
+        //System.out.println(get_x());
+        //System.out.println(dx);
         change_y(dy);
+        System.out.println("The ball moves a bit.");
     }
 }

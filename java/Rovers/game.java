@@ -35,6 +35,7 @@ public class game
         }
         else if(command.equals("t")){
             tick();
+            master.draw(map);//Tells the UI to update the display
         }
     }
     private void add(obj thing){
