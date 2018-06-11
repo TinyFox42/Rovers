@@ -23,6 +23,8 @@ public class game
         if(setup.equals("1")){
             obj rocky=new rock(5,5);
             add(rocky);
+            obj ball=new ball(3,3,"Ball","It rolls *very* easily.",1,-1);
+            add(ball);
         }
         master.draw(map);
     }
