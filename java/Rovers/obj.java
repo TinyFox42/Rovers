@@ -27,4 +27,10 @@ public abstract class obj
    public abstract String draw();//returns the sprite to show
    public abstract String name();//gives the name of the object
    public abstract String desc();//returns the full description of the object
+   public void change_x(int delta){
+       x+=delta;
+    }
+   public void change_y(int delta){
+       y+=delta;
+    }
 }
