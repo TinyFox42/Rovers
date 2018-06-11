@@ -6,15 +6,13 @@
  * @0.1
  */
 import java.util.ArrayList;
-import java.util.Hashtable;
 public class game
 {
-    private ArrayList<obj> obs;
-    private Hashtable<Integer, Hashtable<Integer, obj>> map;
+    private ArrayList<obj> map;
     private veiwer master;
     public game(veiwer master){
         this.master=master;
-        obs=new ArrayList();
+        map=new ArrayList();
     }
     public void create(){
         this.create(master.ask("Enter setup code:"));
@@ -26,7 +24,7 @@ public class game
             obj rocky=new rock(5,5);
             add(rocky);
         }
-        master.draw(obs);
+        master.draw(map);
     }
     public void processCommand(String command){
         //Later on, will actually make stuff
@@ -38,10 +36,10 @@ public class game
         }
     }
     private void add(obj thing){
-        obs.add(thing);
+        map.add(thing);
     }
     private void tick(){
-        for(obj thing: obs){
+        for(obj thing: map){
             thing.tick();
         }
     }
