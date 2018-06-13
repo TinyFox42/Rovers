@@ -1,4 +1,4 @@
 #Use '#' to comment out lines here
 #Right now doesn't change that much
 #Really just a tester
-scale=4
+scale=10

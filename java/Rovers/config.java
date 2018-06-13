@@ -43,11 +43,11 @@ public class config{
                 System.out.println(line);
             }
             else{
-                if(matcher.group(0)=="scale"){
-                    scale=Integer.parseInt(matcher.group(1));
+                if(matcher.group(1).equals("scale")){
+                    scale=Integer.parseInt(matcher.group(2));
                 }//Other config stuff would go here
                 else{
-                    System.out.println("Invalid config setting found: "+matcher.group(0));
+                    System.out.println("Invalid config setting found: "+matcher.group(1));
                 }
             }
         }
