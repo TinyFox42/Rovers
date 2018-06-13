@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=config
+comment1.params=
+comment1.target=config()
+comment2.params=line
+comment2.target=void\ processLine(java.lang.String)
+comment3.params=
+comment3.target=int\ get_scale()
+numComments=4
