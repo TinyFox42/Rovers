@@ -7,6 +7,7 @@
  */
 import java.util.Scanner;
 import java.util.ArrayList;
+import objects.obj;
 public class cdVeiw implements veiwer
 {
     private Scanner s;

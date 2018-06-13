@@ -5,6 +5,7 @@
  * @author (your name)
  * @version (a version number or a date)
  */
+package objects;
 public class ball extends obj
 {
     private String name;

@@ -1,6 +1,5 @@
 #BlueJ class context
 comment0.target=obj
-comment0.text=\r\n\ Abstract\ class\ for\ everything\ on\ the\ map\r\n\r\n\ @Eli\r\n\ @0.1\r\n
 comment1.params=x\ y
 comment1.target=obj(int,\ int)
 comment2.params=

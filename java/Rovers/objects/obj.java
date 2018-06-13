@@ -5,6 +5,7 @@
  * @Eli
  * @0.1
  */
+package objects;
 public abstract class obj
 {
    private int x;

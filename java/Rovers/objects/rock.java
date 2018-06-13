@@ -5,6 +5,7 @@
  * @Eli
  * @0.1
  */
+package objects;
 public class rock extends obj
 {
     private String name;

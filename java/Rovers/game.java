@@ -6,6 +6,7 @@
  * @0.1
  */
 import java.util.ArrayList;
+import objects.*;
 public class game
 {
     private ArrayList<obj> map;

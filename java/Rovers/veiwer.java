@@ -7,6 +7,7 @@
  * @0.1
  */
 import java.util.ArrayList;
+import objects.obj;
 public interface veiwer
 {
     void draw(ArrayList<obj> obs);//Remakes the map view
