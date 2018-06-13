@@ -7,6 +7,8 @@
  */
 import java.util.ArrayList;
 import objects.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;//Stuff to make regexes work nicely
 public class game
 {
     private ArrayList<obj> map;
@@ -40,11 +42,21 @@ public class game
             master.draw(map);//Tells the UI to update the display
         }*/
         ///*
-        switch (command){
+        Pattern comm_finder=Pattern.compile("\\s*(\\w+)\\s*(.*)");
+        Matcher finder=comm_finder.matcher(command);
+        if(!finder.matches()){
+            master.notify("Invalid command format");
+            return;
+        }
+        String op=finder.group(1);
+        String mods=finder.group(2);
+        switch (op){
             case "q": master.end();
                 break;
             case "t":tick();
                 master.draw(map);
+                break;
+            default: master.notify("Unrecognized command '"+op+"'.");
                 break;
         }//*/
         if(command.equals("kill")){
