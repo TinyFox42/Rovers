@@ -29,6 +29,9 @@ public class cdVeiw implements veiwer
             System.out.print(map);
             System.out.print(">");
             String comm=s.next();
+            if(comm.equals("game override kill")){
+                return;
+            }
             g.processCommand(comm);
         }
     }

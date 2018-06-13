@@ -31,12 +31,24 @@ public class game
     }
     public void processCommand(String command){
         //Later on, will actually make stuff
+        /*
         if(command.equals("q")){
             master.end();
         }
         else if(command.equals("t")){
             tick();
             master.draw(map);//Tells the UI to update the display
+        }*/
+        ///*
+        switch (command){
+            case "q": master.end();
+                break;
+            case "t":tick();
+                master.draw(map);
+                break;
+        }//*/
+        if(command.equals("kill")){
+            master.end();
         }
     }
     private void add(obj thing){
