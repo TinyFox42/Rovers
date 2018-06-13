@@ -1,0 +1,42 @@
+Don't know how java will handle me editing a file without the compiler open (I have no idea how the different files work), so I'll just plan here
+The config setup:
+  Config will have:
+    Position scale (int can't handle 1.01, and I don't want to have to worry about floating point, so if scale is 100 then 1.01 would be 101)
+    More stuff later
+Ok, basic code for this (will need some other stuff to make it actually compile)
+Based off of https://www.caveofprogramming.com/java/java-file-reading-and-writing-files-in-java.html 
+//Start partial code
+import java.io.*;//Import stuff needed to read files
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;//Stuff to make regexes work nicely
+public class config{
+  private int scale;
+  public config(){
+    String filename="config.txt";
+    try{
+      FileReader fileReader = new FileReader(filename);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+      String line=null;
+      while((line=bufferedReader.readLine())!=null){
+        processLine(line);//This still needs to be coded
+      }
+      bufferedReader.close();
+    catch(FileNotFoundException ex){
+      System.out.println("config.txt could not be opened. Switching to default values.");
+      useDefault();//Also needs to be coded
+    }
+    catch(IOException ex){
+      System.out.println("config.txt could not be read. Switching to default values.");
+      useDefault();//Code this later on
+    }
+  }
+  private void processLine(String line){
+    if(line.matches("\\s*#.*")){
+      //Ignore this line, #'s are comments
+    }
+    else{
+      Pattern pattern=Pattern.compile("\\s*(\\w+)\\s*=\\s*(\\d+).*");
+      Matcher matcher = pattern.matcher(line);
+      //Ok, running low on time
+      //look it up later
+    }
