@@ -2,6 +2,8 @@
 comment0.target=obj
 comment1.params=x\ y
 comment1.target=obj(int,\ int)
+comment10.params=
+comment10.target=config\ get_config()
 comment2.params=
 comment2.target=int\ get_x()
 comment3.params=
@@ -18,4 +20,4 @@ comment8.params=delta
 comment8.target=void\ change_x(int)
 comment9.params=delta
 comment9.target=void\ change_y(int)
-numComments=10
+numComments=11

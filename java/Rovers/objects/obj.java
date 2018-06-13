@@ -12,9 +12,13 @@ public abstract class obj
    private int y;
    static int nextId=0;
    private int id;
+   private static config cfg=null;
    public obj(int x, int y){
-       this.x=x;
-       this.y=y;
+       if(cfg==null){
+           cfg=new config();
+        }
+       this.x=x*cfg.get_scale();
+       this.y=y*cfg.get_scale();
        id=nextId;
        nextId++;
     }
@@ -33,5 +37,11 @@ public abstract class obj
     }
    public void change_y(int delta){
        y+=delta;
+    }
+   public static config get_config(){
+       if(cfg==null){
+           cfg=new config();
+        }
+       return cfg;
     }
 }

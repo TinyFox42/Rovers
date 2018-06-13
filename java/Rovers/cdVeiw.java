@@ -8,6 +8,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import objects.obj;
+import objects.config;
 public class cdVeiw implements veiwer
 {
     private Scanner s;
@@ -45,6 +46,7 @@ public class cdVeiw implements veiwer
         map="";
         String [][] temp=new String[10][10];//Yeah, for now max map is 10X10
         ////Should probably set them all to .s here
+        config cfg=objects.obj.get_config();
         for(int i=0; i<10; i++){
             for(int j=0; j<10; j++){
                 temp[i][j]=".";//I think "....." is more clear than "     "
@@ -52,10 +54,13 @@ public class cdVeiw implements veiwer
         }
         //For the record, for the GUI I should look into AWT
         //Seems to be like tkinter, but in this case I will be working with java
+        
         for(int i=0; i<obs.size(); i++){
             obj t=obs.get(i);
-            if(0<=t.get_x()&&t.get_x()<=9&&0<=t.get_y()&&t.get_y()<=9){
-                temp[t.get_y()][t.get_x()]=t.draw();
+            int x=t.get_x()/cfg.get_scale();
+            int y=t.get_y()/cfg.get_scale();
+            if(0<=x&&x<=9&&0<=y&&y<=9){
+                temp[x][y]=t.draw();
             }
             else{
                 System.out.println("Something is out of bounds");

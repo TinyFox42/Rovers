@@ -1,3 +1,5 @@
+package objects;
+
 
 /**
  * Handles config stuff
