@@ -40,3 +40,21 @@ public class config{
       //Ok, running low on time
       //look it up later
     }
+
+
+
+
+Planning out a few more advanced in-game commands:
+  *list: lists all objects, with name and id
+  *veiw <id>: Returns the name, id, and description of object with id. So that you can see what is there
+  *veiw <x> <y>: Returns the name, id, and description of object at (x,y)
+Ok, so the command functions:
+  private void list(){
+    for(obj thing: map){
+      master.notify(thing.name()+"\nID: "+thing.id());//Yeah, obj.id() isn't a thing right now
+      //Later on, I'll want to make a new veiwer function for some side box data, for when I switch to a GUI
+    }
+  }
+  private void veiw(String mods){
+    //Yeah, I'm not coding more right now...
+  }
