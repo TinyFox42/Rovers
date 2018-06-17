@@ -44,4 +44,7 @@ public abstract class obj
         }
        return cfg;
     }
+   public int get_id(){
+       return id;
+    }
 }

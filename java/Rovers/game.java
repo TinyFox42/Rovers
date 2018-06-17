@@ -56,12 +56,22 @@ public class game
             case "t":tick();
                 master.draw(map);
                 break;
+            case "list":list(mods);
+                break;
             default: master.notify("Unrecognized command '"+op+"'.");
                 break;
         }//*/
         if(command.equals("kill")){
             master.end();
         }
+    }
+    private void list(String mods){
+        String info="";
+        for(obj thing: map){
+            info+=thing.name()+"\tID: "+thing.get_id();
+            info+="\n";
+        }
+        System.out.print(info);//Later on, put this somewhere in veiwer
     }
     private void add(obj thing){
         map.add(thing);

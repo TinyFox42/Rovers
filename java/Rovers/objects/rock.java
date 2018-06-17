@@ -19,10 +19,10 @@ public class rock extends obj
         this.desc=desc;
     }
     public String desc(){
-        return name;
+        return desc;
     }
     public String name(){
-        return desc;
+        return name;
     }
     public String draw(){
         return "*";
