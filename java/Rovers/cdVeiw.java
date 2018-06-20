@@ -11,10 +11,12 @@ import objects.obj;
 import objects.config;
 public class cdVeiw implements veiwer
 {
+    private String help="To veiw the help tab, enter \"/help\"\nTo veiw the info tab, enter \"/info\"\nTo use the backup quit, enter \"/kill\"";
     private Scanner s;
     private String map;
     private game g;
     private boolean running=true;
+    private String info="";
     public static void main(){
         cdVeiw main=new cdVeiw();
         main.start();
@@ -29,10 +31,21 @@ public class cdVeiw implements veiwer
             System.out.print(map);
             System.out.print(">");
             String comm=s.next();
-            if(comm.equals("game override kill")){
-                return;
+            comm=comm.trim();
+            if(comm.startsWith("/")){//A few special commands
+                if(comm.equals("/kill")){
+                    return;
+                }
+                else if(comm.equals("/info")){
+                    System.out.println(info);
+                }
+                else if(comm.equals("/help")){
+                    System.out.println(help);
+                }
             }
-            g.processCommand(comm);
+            else{
+                g.processCommand(comm);
+            }
         }
     }
     public void notify(String note){
@@ -75,5 +88,9 @@ public class cdVeiw implements veiwer
             }
             map+="\n";
         }
+    }
+    public void update_info(String info){
+        this.info=info;
+        System.out.println("Info tab has been updated. Enter /info to veiw the info tab.");
     }
 }

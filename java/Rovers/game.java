@@ -71,7 +71,8 @@ public class game
             info+=thing.name()+"\tID: "+thing.get_id();
             info+="\n";
         }
-        System.out.print(info);//Later on, put this somewhere in veiwer
+        //System.out.print(info);//Later on, put this somewhere in veiwer
+        master.update_info(info);
     }
     private void add(obj thing){
         map.add(thing);

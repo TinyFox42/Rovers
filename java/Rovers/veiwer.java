@@ -14,4 +14,5 @@ public interface veiwer
     String ask(String question);//For the game to be able to ask for a response to a question
     void end();//Tells the UI that it is safe to end the game
     void notify(String message);//For some other popup
+    void update_info(String info);
 }

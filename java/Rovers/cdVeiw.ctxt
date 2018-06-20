@@ -14,4 +14,6 @@ comment6.params=question
 comment6.target=java.lang.String\ ask(java.lang.String)
 comment7.params=obs
 comment7.target=void\ draw(java.util.ArrayList)
-numComments=8
+comment8.params=info
+comment8.target=void\ update_info(java.lang.String)
+numComments=9
