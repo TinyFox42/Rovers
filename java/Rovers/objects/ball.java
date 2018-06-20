@@ -42,4 +42,11 @@ public class ball extends obj
         change_y(dy);
         System.out.println("The ball moves a bit.");
     }
+    public String info(){
+        String info=name+"\tID: "+get_id();
+        info+="\n\t"+desc;
+        info+="\n\tx:  "+get_x()+"\n\ty:  "+get_y();
+        info+="\n\tdx: "+dx+"\n\tdy: "+dy;
+        return info;
+    }
 }

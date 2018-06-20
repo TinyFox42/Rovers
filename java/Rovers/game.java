@@ -58,6 +58,8 @@ public class game
                 break;
             case "list":list(mods);
                 break;
+            case "veiw":veiw(command);
+                break;
             default: master.notify("Unrecognized command '"+op+"'.");
                 break;
         }//*/
@@ -72,6 +74,29 @@ public class game
             info+="\n";
         }
         //System.out.print(info);//Later on, put this somewhere in veiwer
+        master.update_info(info);
+    }
+    private void veiw(String full){
+        String [] ids=full.split(" ");
+        String info="";
+        for(int i=1; i<ids.length; i++){
+            String temp=ids[i];
+            //later on: put in some checks that it is acually a number
+            int id=Integer.parseInt(temp);
+            obj thing;
+            boolean looking=true;
+            for(int j=0; looking&&j<map.size(); j++){
+                obj curr=map.get(j);
+                if(curr.get_id()==id){
+                    looking=false;
+                    thing=curr;
+                    info+=thing.info();
+                }
+            }
+            if(looking){
+                info+="Object with ID "+id+" could not be found.";
+            }
+        }
         master.update_info(info);
     }
     private void add(obj thing){

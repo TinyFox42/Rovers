@@ -30,4 +30,10 @@ public class rock extends obj
     public void tick(){
         System.out.println("Test");
     }
+    public String info(){
+        String info=name+"\tID: "+get_id();
+        info+="\n\t"+desc;
+        info+="\n\tx: "+get_x()+"\n\ty: "+get_y();
+        return info;
+    }
 }

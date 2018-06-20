@@ -47,4 +47,10 @@ public abstract class obj
    public int get_id(){
        return id;
     }
+   public String info(){
+       String info="ID: "+id;
+       info+="\n\tx: "+x;
+       info+="\n\ty: "+y;
+       return info;
+    }
 }
